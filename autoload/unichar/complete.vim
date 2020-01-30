@@ -29,7 +29,9 @@ endfu
 fu s:init() abort "{{{2
     let s:unicode_dict = unichar#util#dict()
     let s:unicode_dict = s:translate(items(s:unicode_dict))
-    call map(s:unicode_dict, '"\x1b[33m"..v:val[0].."\x1b[m\t"..v:val[1]')
+    call map(s:unicode_dict, '"\x1b[38;5;30m"..v:val[0].."\x1b[0m\t"..v:val[1]')
+    "                                    ^^
+    "                                    defines the color for the glyph of a unicode character
 endfu
 "}}}1
 " Utilities {{{1
