@@ -16,7 +16,7 @@ endfu
 " Core {{{1
 fu s:translate(lists) abort "{{{2
     for list in a:lists
-        let list[0] = eval('"\u'..printf('%x', list[0])..'"')
+        let list[0] = eval('"\U'..printf('%x', list[0])..'"')
     endfor
     return a:lists
 endfu
