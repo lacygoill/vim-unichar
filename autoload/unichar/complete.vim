@@ -5,7 +5,7 @@ let g:autoloaded_unichar#complete = 1
 
 " Interface {{{1
 fu unichar#complete#fuzzy() abort "{{{2
-    if !exists('*fzf#wrap') | return s:error('fzf is not installed') | endif
+    if !exists('*fzf#run') | return s:error('fzf is not installed') | endif
     if !exists('s:unicode_dict') | call s:init() | endif
     call fzf#run(fzf#wrap('unicode characters', {
         \ 'source': s:unicode_dict,
