@@ -7,9 +7,9 @@ let g:autoloaded_unichar#complete = 1
 fu unichar#complete#fuzzy() abort "{{{2
     if !exists('*fzf#run') | return s:error('fzf is not installed') | endif
     if !exists('s:unicode_dict') | call s:init() | endif
-    call fzf#run(fzf#wrap('unicode characters', {
+    call fzf#run(fzf#wrap({
         \ 'source': s:unicode_dict,
-        \ 'options': '--ansi --tiebreak=index +m',
+        \ 'options': '--ansi --nth=2.. --tiebreak=index +m',
         \ 'sink': function('s:inject_unicode_character')}))
 endfu
 "}}}1
