@@ -3,14 +3,18 @@ if exists('g:autoloaded_unichar#complete')
 endif
 let g:autoloaded_unichar#complete = 1
 
+" sets the color for the glyph of a unicode character
+const s:COLOR = 30
+
 " Interface {{{1
 fu unichar#complete#fuzzy() abort "{{{2
     if !exists('*fzf#run') | return s:error('fzf is not installed') | endif
-    if !exists('s:unicode_dict') | call s:init() | endif
+    if !exists('s:fuzzy_source') | call s:set_fuzzy_source() | endif
     call fzf#run(fzf#wrap({
-        \ 'source': s:unicode_dict,
+        \ 'source': s:fuzzy_source,
         \ 'options': '--ansi --nth=2.. --tiebreak=index +m',
-        \ 'sink': function('s:inject_unicode_character')}))
+        \ 'sink': function('s:inject_unicode_character',
+        \ )}))
 endfu
 "}}}1
 " Core {{{1
@@ -26,12 +30,10 @@ fu s:inject_unicode_character(line) abort "{{{2
     call feedkeys((col('.') >= col('$') - 1 ? 'a' : 'i')..char, 'in')
 endfu
 
-fu s:init() abort "{{{2
-    let s:unicode_dict = unichar#util#dict()
-    let s:unicode_dict = s:translate(items(s:unicode_dict))
-    call map(s:unicode_dict, '"\x1b[38;5;30m"..v:val[0].."\x1b[0m\t"..v:val[1]')
-    "                                    ^^
-    "                                    defines the color for the glyph of a unicode character
+fu s:set_fuzzy_source() abort "{{{2
+    let s:fuzzy_source = unichar#util#dict()
+    let s:fuzzy_source = s:translate(items(s:fuzzy_source))
+    call map(s:fuzzy_source, '"\x1b[38;5;"..s:COLOR.."m"..v:val[0].."\x1b[0m\t"..v:val[1]')
 endfu
 "}}}1
 " Utilities {{{1
