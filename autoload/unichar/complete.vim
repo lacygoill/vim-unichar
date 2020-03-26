@@ -33,6 +33,25 @@ endfu
 fu s:set_fuzzy_source() abort "{{{2
     let s:fuzzy_source = unichar#util#dict()
     let s:fuzzy_source = s:translate(items(s:fuzzy_source))
+    " Some weird unicode characters can prevent us from accessing a match in the fzf window.{{{
+    "
+    " For example, search for `single`, then press `C-p` to visit all matches.
+    " You  won't   be  able  to   finish,  because  eventually,  `c6`   will  be
+    " automatically appended to the command-line:
+    "
+    "     single6c
+    "           ^^
+    "
+    " In this example, I think the culprit is `SINGLE CHARACTER INTRODUCER`.
+    "
+    " Btw, this is probably a bug in st:
+    " https://github.com/tmux/tmux/issues/2124#issuecomment-601301882
+    "
+    " ---
+    "
+    " Anyway, if a character is not printable, I doubt I'll ever want to insert it.
+    "}}}
+    call filter(s:fuzzy_source, 'v:val[0] !~# ''[^[:print:]]''')
     call map(s:fuzzy_source, '"\x1b[38;5;"..s:COLOR.."m"..v:val[0].."\x1b[0m\t"..v:val[1]')
 endfu
 "}}}1
