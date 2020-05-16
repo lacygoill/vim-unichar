@@ -12,7 +12,7 @@ fu unichar#complete#fuzzy() abort "{{{2
     if !exists('s:fuzzy_source') | call s:set_fuzzy_source() | endif
     call fzf#run(fzf#wrap({
         \ 'source': s:fuzzy_source,
-        \ 'options': '--ansi --nth=2.. --tiebreak=index +m',
+        \ 'options': '--ansi --nth=2.. --tiebreak=index -m',
         \ 'sink': function('s:inject_unicode_character',
         \ )}))
 endfu
