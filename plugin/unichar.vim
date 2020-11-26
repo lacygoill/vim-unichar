@@ -5,7 +5,7 @@ let g:loaded_unichar = 1
 
 " Mappings {{{1
 
-ino <silent> <c-g><c-u> <c-\><c-o>:call unichar#complete#fuzzy()<cr>
+ino <c-g><c-u> <cmd>call unichar#complete#fuzzy()<cr>
 
 " Commands {{{1
 
