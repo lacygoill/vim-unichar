@@ -1,65 +1,74 @@
-if exists('g:autoloaded_unichar#complete')
-    finish
-endif
-let g:autoloaded_unichar#complete = 1
+vim9 noclear
 
-" sets the color for the glyph of a unicode character
-const s:COLOR = 30
+if exists('loaded') | finish | endif
+var loaded = true
 
-" Interface {{{1
-fu unichar#complete#fuzzy() abort "{{{2
-    if !exists('*fzf#run') | return s:error('fzf is not installed') | endif
-    if !exists('s:fuzzy_source') | call s:set_fuzzy_source() | endif
-    call fzf#wrap({
-        \ 'source': s:fuzzy_source,
-        \ 'options': '--ansi --nth=2.. --tiebreak=index -m',
-        \ 'sink': function('s:inject_unicode_character',
-        \ )})
-        \ ->fzf#run()
-endfu
-"}}}1
-" Core {{{1
-fu s:translate(lists) abort "{{{2
-    for list in a:lists
-        let list[0] = eval('"\U' .. printf('%x', list[0]) .. '"')
+# sets the color for the glyph of a unicode character
+const COLOR: number = 30
+
+# Interface {{{1
+def unichar#complete#fuzzy() #{{{2
+    if !exists('*fzf#run')
+        Error('fzf is not installed')
+        return
+    endif
+    if fuzzy_source == []
+        SetFuzzySource()
+    endif
+    fzf#wrap({
+        source: fuzzy_source,
+        options: '--ansi --nth=2.. --tiebreak=index -m',
+        sink: InjectUnicodeCharacter,
+        })
+        ->fzf#run()
+enddef
+
+var fuzzy_source: list<string>
+#}}}1
+# Core {{{1
+def Translate(lists: list<list<string>>): list<list<string>> #{{{2
+    for list in lists
+        list[0] = eval('"\U' .. printf('%x', list[0]->str2nr()) .. '"')
     endfor
-    return a:lists
-endfu
+    return lists
+enddef
 
-fu s:inject_unicode_character(line) abort "{{{2
-    let char = matchstr(a:line, '^.')
-    call feedkeys((col('.') >= col('$') - 1 ? 'a' : 'i') .. char, 'in')
-endfu
+def InjectUnicodeCharacter(line: string) #{{{2
+    var char: string = matchstr(line, '^.')
+    feedkeys((col('.') >= col('$') - 1 ? 'a' : 'i') .. char, 'in')
+enddef
 
-fu s:set_fuzzy_source() abort "{{{2
-    let s:fuzzy_source = unichar#util#dict()
-    let s:fuzzy_source = items(s:fuzzy_source)->s:translate()
-    " Some weird unicode characters can prevent us from accessing a match in the fzf window.{{{
-    "
-    " For example, search for `single`, then press `C-p` to visit all matches.
-    " You  won't   be  able  to   finish,  because  eventually,  `c6`   will  be
-    " automatically appended to the command-line:
-    "
-    "     single6c
-    "           ^^
-    "
-    " In this example, I think the culprit is `SINGLE CHARACTER INTRODUCER`.
-    "
-    " Btw, this is probably a bug in st:
-    " https://github.com/tmux/tmux/issues/2124#issuecomment-601301882
-    "
-    " ---
-    "
-    " Anyway, if a character is not printable, I doubt I'll ever want to insert it.
-    "}}}
-    call filter(s:fuzzy_source, 'v:val[0] !~# ''[^[:print:]]''')
-    call map(s:fuzzy_source, '"\x1b[38;5;" .. s:COLOR .. "m" .. v:val[0] .. "\x1b[0m\t" .. v:val[1]')
-endfu
-"}}}1
-" Utilities {{{1
-fu s:error(msg) abort "{{{2
+def SetFuzzySource() #{{{2
+    fuzzy_source = unichar#util#dict()
+        ->items()
+        ->Translate()
+        # Some weird unicode characters can prevent us from accessing a match in the fzf window.{{{
+        #
+        # For example, search for `single`, then press `C-p` to visit all matches.
+        # You  won't  be  able  to  finish, because  eventually,  `c6`  will  be
+        # automatically appended to the command-line:
+        #
+        #     single6c
+        #           ^^
+        #
+        # In this example, I think the culprit is `SINGLE CHARACTER INTRODUCER`.
+        #
+        # Btw, this is probably a bug in st:
+        # https://github.com/tmux/tmux/issues/2124#issuecomment-601301882
+        #
+        # ---
+        #
+        # Anyway,  if a character  is not printable, I  doubt I'll ever  want to
+        # insert it.
+        #}}}
+        ->filter((_, v) => v[0] !~ '[^[:print:]]')
+        ->mapnew((_, v) => "\x1b[38;5;" .. COLOR .. 'm' .. v[0] .. "\x1b[0m\t" .. v[1])
+enddef
+#}}}1
+# Utilities {{{1
+def Error(msg: string) #{{{2
     echohl ErrorMsg
-    echo a:msg
+    echo msg
     echohl NONE
-endfu
+enddef
 
