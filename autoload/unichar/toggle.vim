@@ -7,7 +7,7 @@ def unichar#toggle#main(lnum1: number, lnum2: number)
     cursor(lnum1, 1)
     var pat: string
     var Rep: func
-    if search('\\u\x\+', 'nW', lnum2) != 0
+    if search('\\u\x\+', 'nW', lnum2) > 0
         [pat, Rep] = [
             '\\u\x\+',
             (m: list<string>): string => eval('"' .. m[0] .. '"')
