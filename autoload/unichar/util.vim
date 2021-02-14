@@ -1,4 +1,4 @@
-vim9
+vim9script
 
 var d: dict<string>  =  {}
 
