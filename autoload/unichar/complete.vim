@@ -61,8 +61,9 @@ def SetFuzzySource() #{{{2
         # Anyway,  if a character  is not printable, I  doubt I'll ever  want to
         # insert it.
         #}}}
-        ->filter((_, v) => v[0] !~ '[^[:print:]]')
-        ->mapnew((_, v) => "\x1b[38;5;" .. COLOR .. 'm' .. v[0] .. "\x1b[0m\t" .. v[1])
+        ->filter((_, v: list<string>): bool => v[0] !~ '[^[:print:]]')
+        ->mapnew((_, v: list<string>): string =>
+            "\x1b[38;5;" .. COLOR .. 'm' .. v[0] .. "\x1b[0m\t" .. v[1])
 enddef
 #}}}1
 # Utilities {{{1

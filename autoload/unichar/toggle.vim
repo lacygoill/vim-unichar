@@ -22,8 +22,8 @@ def unichar#toggle#main(lnum1: number, lnum2: number)
                   )
         ]
     endif
-    var old_lines: list<string> = getline(lnum1, lnum2)
-    var new_lines: list<string> = map(old_lines, (_, v) => substitute(v, pat, Rep, 'g'))
-    setline(lnum1, new_lines)
+    getline(lnum1, lnum2)
+        ->map((_, v: string): string => substitute(v, pat, Rep, 'g'))
+        ->setline(lnum1)
 enddef
 
