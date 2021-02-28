@@ -1,6 +1,6 @@
 vim9script
 
-var d: dict<string>  =  {}
+var d: dict<string>
 
 d[0x0000] = 'NULL'
 d[0x0001] = 'START OF HEADING'
