@@ -34,8 +34,7 @@ def Translate(lists: list<list<string>>): list<list<string>> #{{{2
 enddef
 
 def InjectUnicodeCharacter(line: string) #{{{2
-    var char: string = matchstr(line, '^.')
-    feedkeys((col('.') >= col('$') - 1 ? 'a' : 'i') .. char, 'in')
+    feedkeys((col('.') >= col('$') - 1 ? 'a' : 'i') .. line[0], 'in')
 enddef
 
 def SetFuzzySource() #{{{2
