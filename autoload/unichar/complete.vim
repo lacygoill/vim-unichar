@@ -19,8 +19,7 @@ def unichar#complete#fuzzy() #{{{2
         source: fuzzy_source,
         options: '--ansi --nth=2.. --tiebreak=index -m',
         sink: InjectUnicodeCharacter,
-        })
-        ->fzf#run()
+    })->fzf#run()
 enddef
 
 var fuzzy_source: list<string>
