@@ -1,4 +1,4 @@
-vim9script
+vim9script noclear
 
 var d: dict<string>
 
