@@ -17,7 +17,7 @@ def unichar#toggle#main(lnum1: number, lnum2: number)
             '[^\x00-\xff]',
             (m: list<string>): string =>
                     char2nr(m[0])
-                  ->printf(char2nr(m[0]) <= 65535
+                  ->printf(char2nr(m[0]) <= 65'535
                         ? '\u%x'
                         : '\U%x')
         ]
