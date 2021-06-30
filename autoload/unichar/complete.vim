@@ -61,13 +61,13 @@ def SetFuzzySource() #{{{2
         #}}}
         ->filter((_, v: list<string>): bool => v[0] !~ '[^[:print:]]')
         ->mapnew((_, v: list<string>): string =>
-            "\x1b[38;5;" .. COLOR .. 'm' .. v[0] .. "\x1b[0m\t" .. v[1])
+            "\x1b[38;5;" .. COLOR .. 'm' .. v[0] .. "\x1b[0m\<Tab>" .. v[1])
 enddef
 #}}}1
 # Utilities {{{1
 def Error(msg: string) #{{{2
     echohl ErrorMsg
-    echom msg
+    echomsg msg
     echohl NONE
 enddef
 

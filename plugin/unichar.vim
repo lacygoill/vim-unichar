@@ -5,7 +5,7 @@ var loaded = true
 
 # Mappings {{{1
 
-ino <c-g><c-u> <cmd>call unichar#complete#fuzzy()<cr>
+inoremap <C-G><C-U> <Cmd>call unichar#complete#fuzzy()<CR>
 
 # Commands {{{1
 
@@ -17,5 +17,5 @@ ino <c-g><c-u> <cmd>call unichar#complete#fuzzy()<cr>
 # characters  whose code  point  is above  255  (anything which  is  not in  the
 # extended ascii table) into special characters + code points.
 
-com -bar -range=% UnicharToggle unichar#toggle#main(<line1>, <line2>)
+command -bar -range=% UnicharToggle unichar#toggle#main(<line1>, <line2>)
 
