@@ -1,8 +1,5 @@
 vim9script noclear
 
-if exists('loaded') | finish | endif
-var loaded = true
-
 # sets the color for the glyph of a unicode character
 const COLOR: number = 30
 

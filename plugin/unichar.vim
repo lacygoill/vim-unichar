@@ -5,7 +5,7 @@ var loaded = true
 
 # Mappings {{{1
 
-inoremap <C-G><C-U> <Cmd>call unichar#complete#fuzzy()<CR>
+inoremap <unique> <C-G><C-U> <Cmd>call unichar#complete#fuzzy()<CR>
 
 # Commands {{{1
 

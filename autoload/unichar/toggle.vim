@@ -1,8 +1,5 @@
 vim9script noclear
 
-if exists('loaded') | finish | endif
-var loaded = true
-
 def unichar#toggle#main(lnum1: number, lnum2: number)
     cursor(lnum1, 1)
     var pat: string
@@ -23,7 +20,7 @@ def unichar#toggle#main(lnum1: number, lnum2: number)
         ]
     endif
     getline(lnum1, lnum2)
-        ->map((_, v: string): string => v->substitute(pat, Rep, 'g'))
+        ->map((_, v: string) => v->substitute(pat, Rep, 'g'))
         ->setline(lnum1)
 enddef
 
