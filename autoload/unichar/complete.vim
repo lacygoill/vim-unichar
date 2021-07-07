@@ -23,7 +23,7 @@ var fuzzy_source: list<string>
 #}}}1
 # Core {{{1
 def Translate(lists: list<list<string>>): list<list<string>> #{{{2
-    for list in lists
+    for list: list<string> in lists
         list[0] = eval('"\U' .. printf('%x', list[0]->str2nr()) .. '"')
     endfor
     return lists
